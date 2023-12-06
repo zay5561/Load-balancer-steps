@@ -1,0 +1,33 @@
+The steps i took to complete project 3 are as follows: 
+
+use the gcloud config set compute/region region command to change to 
+
+use the gloud config set compute/zone zone command to chage my zone to us-east1-b
+
+after my configurations were set, I went ahead and created my www1 www2 and ww3 instances using 
+the following command for all three:  
+--------------------------------------------------
+gcloud compute instances create www1 \
+    --zone=Zone \
+    --tags=network-lb-tag \
+    --machine-type=e2-small \
+    --image-family=debian-11 \
+    --image-project=debian-cloud \
+    --metadata=startup-script='#!/bin/bash
+      apt-get update
+      apt-get install apache2 -y
+      service apache2 restart
+      echo "
+<h3>Web Server: www1</h3>" | tee /var/www/html/index.html'
+---------------------------------------------------
+
+I changed the zone to "$ZONE" because that variable is the default zone for this project
+
+after all three instances were created, i created a firewall with the command:
+gcloud compute firewall-rules create www-firewall-network-lb \
+    --target-tags network-lb-tag --allow tcp:80
+
+Next I used the gcloud compute instances list to get a list of the instances made on the project 
+
+
+
